@@ -28,7 +28,8 @@ namespace CommanderGQL
 
             services
                 .AddGraphQLServer()
-                .AddQueryType<Query>();
+                .AddQueryType<Query>()
+                .AddProjections();
 
             services.AddSwaggerGen(c =>
             {
