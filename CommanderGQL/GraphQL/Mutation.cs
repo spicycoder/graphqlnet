@@ -4,6 +4,8 @@ using CommanderGQL.GraphQL.Payloads;
 using CommanderGQL.Models;
 using HotChocolate;
 using HotChocolate.Data;
+using HotChocolate.Subscriptions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CommanderGQL.GraphQL
@@ -13,7 +15,9 @@ namespace CommanderGQL.GraphQL
         [UseDbContext(typeof(AppDbContext))]
         public async Task<PlatformPayload> AddPlatform(
             PlatformInput input,
-            [ScopedService] AppDbContext context)
+            [ScopedService] AppDbContext context,
+            [Service] ITopicEventSender eventSender,
+            CancellationToken cancellationToken)
         {
             var platform = new Platform
             {
@@ -21,7 +25,12 @@ namespace CommanderGQL.GraphQL
             };
 
             context.Platforms.Add(platform);
-            await context.SaveChangesAsync();
+            await context.SaveChangesAsync(cancellationToken);
+
+            await eventSender.SendAsync(
+                nameof(Subscription.OnPlatformAdded),
+                platform,
+                cancellationToken);
 
             return new PlatformPayload(platform);
         }
@@ -29,7 +38,9 @@ namespace CommanderGQL.GraphQL
         [UseDbContext(typeof(AppDbContext))]
         public async Task<CommandPayload> AddCommand(
             CommandInput input,
-            [ScopedService] AppDbContext context)
+            [ScopedService] AppDbContext context,
+            [Service] ITopicEventSender eventSender,
+            CancellationToken cancellationToken)
         {
             var command = new Command
             {
@@ -39,7 +50,12 @@ namespace CommanderGQL.GraphQL
             };
 
             context.Commands.Add(command);
-            await context.SaveChangesAsync();
+            await context.SaveChangesAsync(cancellationToken);
+
+            await eventSender.SendAsync(
+                nameof(Subscription.OnCommandAdded),
+                command,
+                cancellationToken);
 
             return new CommandPayload(command);
         }

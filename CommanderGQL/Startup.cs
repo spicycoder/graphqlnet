@@ -32,9 +32,11 @@ namespace CommanderGQL
                 .AddType<PlatformType>()
                 .AddType<CommandType>()
                 .AddType<Mutation>()
+                .AddSubscriptionType<Subscription>()
                 .AddProjections()
                 .AddFiltering()
-                .AddSorting();
+                .AddSorting()
+                .AddInMemorySubscriptions();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -43,6 +45,8 @@ namespace CommanderGQL
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseWebSockets();
 
             app.UseHttpsRedirection();
             app.UseRouting();
