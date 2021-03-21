@@ -1,19 +1,34 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
+using MySql.EntityFrameworkCore.Metadata;
 
 namespace CommanderGQL.Migrations
 {
-    public partial class AddCommandToDB : Migration
+    public partial class MySQLContext : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Platforms",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    LicenseKey = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Platforms", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Commands",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    HowTo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CommandLine = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    HowTo = table.Column<string>(type: "text", nullable: false),
+                    CommandLine = table.Column<string>(type: "text", nullable: false),
                     PlatformId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -37,6 +52,9 @@ namespace CommanderGQL.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Commands");
+
+            migrationBuilder.DropTable(
+                name: "Platforms");
         }
     }
 }

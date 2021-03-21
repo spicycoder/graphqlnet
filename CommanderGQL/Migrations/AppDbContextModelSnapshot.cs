@@ -2,7 +2,6 @@
 using CommanderGQL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CommanderGQL.Migrations
@@ -14,24 +13,22 @@ namespace CommanderGQL.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.4")
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("Relational:MaxIdentifierLength", 64)
+                .HasAnnotation("ProductVersion", "5.0.4");
 
             modelBuilder.Entity("CommanderGQL.Models.Command", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<string>("CommandLine")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("HowTo")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<int>("PlatformId")
                         .HasColumnType("int");
@@ -47,19 +44,41 @@ namespace CommanderGQL.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<string>("LicenseKey")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
                     b.ToTable("Platforms");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = ".NET"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Docker"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            LicenseKey = "1029384756",
+                            Name = "Windows"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Ubuntu"
+                        });
                 });
 
             modelBuilder.Entity("CommanderGQL.Models.Command", b =>
