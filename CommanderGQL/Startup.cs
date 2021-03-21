@@ -31,6 +31,7 @@ namespace CommanderGQL
                 .AddQueryType<Query>()
                 .AddType<PlatformType>()
                 .AddType<CommandType>()
+                .AddType<Mutation>()
                 .AddProjections()
                 .AddFiltering()
                 .AddSorting();
